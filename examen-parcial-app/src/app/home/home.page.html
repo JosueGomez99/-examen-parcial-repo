@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Inicio</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-item lines="none"> <!-- Aquí agregamos lines="none" para eliminar la línea -->
+  <ion-label>¿Qué estás pensando hoy?</ion-label>
+</ion-item>
+<ion-content>
+  <ion-button (click)="getLocationButtonClicked()">
+    <ion-icon src="assets/camera-icon.svg"></ion-icon>
+  </ion-button>
+
+  <ion-button (click)="takePicture()">
+    <ion-icon src="assets/location-icon.svg"></ion-icon>
+  </ion-button>
+
+  <ion-input value="{{ message }}"></ion-input>
+</ion-content>
