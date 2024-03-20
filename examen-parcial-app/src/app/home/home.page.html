@@ -3,10 +3,17 @@
     <ion-title>Inicio</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-item lines="none"> <!-- Aquí agregamos lines="none" para eliminar la línea -->
-  <ion-label>¿Qué estás pensando hoy?</ion-label>
-</ion-item>
+
 <ion-content>
+  <ion-item lines="none" *ngIf="showLabel"> <!-- Agrega *ngIf para controlar la visibilidad del label -->
+    <ion-label>¿Qué estás pensando hoy?</ion-label>
+  </ion-item>
+
+  <!-- Muestra la imagen seleccionada -->
+  <ion-thumbnail *ngIf="imageSrc">
+    <ion-img [src]="imageSrc"></ion-img>
+  </ion-thumbnail>
+
   <ion-button (click)="getLocationButtonClicked()">
     <ion-icon src="assets/camera-icon.svg"></ion-icon>
   </ion-button>

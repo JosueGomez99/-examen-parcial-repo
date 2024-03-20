@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation'; 
 import { Platform } from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { IonHeader,IonToolbar,IonTitle,IonContent,IonButton,IonIcon,IonInput,IonItem,IonLabel } from '@ionic/angular/standalone';
+import { CommonModule } from '@angular/common'; // Agrega esta importación
+import { IonHeader,IonToolbar,IonTitle,IonContent,IonButton,IonIcon,IonInput,IonItem,IonLabel,IonThumbnail,IonImg } from '@ionic/angular/standalone';
 
 
 @Component({
@@ -10,11 +11,12 @@ import { IonHeader,IonToolbar,IonTitle,IonContent,IonButton,IonIcon,IonInput,Ion
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone:true,
-  imports:[IonHeader,IonToolbar,IonTitle,IonContent,IonButton,IonIcon,IonInput,IonItem,IonLabel]
+  imports:[IonHeader,IonToolbar,IonTitle,IonContent,IonButton,IonIcon,IonInput,IonItem,IonLabel,IonThumbnail,IonImg,CommonModule]
 })
 export class HomePage {
   message: string = '';
-  imageSrc: string = ''; // Define la propiedad imageSrc aquí
+  imageSrc: string = '';
+  showLabel: boolean = true; // Agrega una bandera para controlar la visibilidad del label
 
   constructor(private platform: Platform) {}
 
@@ -29,20 +31,19 @@ export class HomePage {
     });
   }
 
+  async pickImage() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Photos, // Solo permite seleccionar desde galería
+      promptLabelHeader: 'Seleccionar una imagen',
+      promptLabelPhoto: 'Seleccionar desde galería',
+    });
 
+    if (!image) return;
 
-async pickImage() {
-  const image = await Camera.getPhoto({
-    quality: 90,
-    allowEditing: false,
-    resultType: CameraResultType.Uri,
-    source: CameraSource.Photos, // Solo permite seleccionar desde galería
-    promptLabelHeader: 'Seleccionar una imagen',
-    promptLabelPhoto: 'Seleccionar desde galería',
-  });
-
-  if (!image) return;
-
-  this.imageSrc = image.webPath ?? image.path ?? '';
-}
+    this.imageSrc = image.webPath ?? image.path ?? '';
+    this.showLabel = false; // Oculta el label al seleccionar una imagen
+  }
 }
