@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation'; 
 import { Platform } from '@ionic/angular';
-
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { IonHeader,IonToolbar,IonTitle,IonContent,IonButton,IonIcon,IonInput,IonItem,IonLabel } from '@ionic/angular/standalone';
 
 
@@ -14,6 +14,7 @@ import { IonHeader,IonToolbar,IonTitle,IonContent,IonButton,IonIcon,IonInput,Ion
 })
 export class HomePage {
   message: string = '';
+  imageSrc: string = ''; // Define la propiedad imageSrc aquí
 
   constructor(private platform: Platform) {}
 
@@ -28,7 +29,20 @@ export class HomePage {
     });
   }
 
-  async takePicture() {
-    // Implementa lógica para tomar una imagen desde la cámara o galería
-  }
+
+
+async pickImage() {
+  const image = await Camera.getPhoto({
+    quality: 90,
+    allowEditing: false,
+    resultType: CameraResultType.Uri,
+    source: CameraSource.Photos, // Solo permite seleccionar desde galería
+    promptLabelHeader: 'Seleccionar una imagen',
+    promptLabelPhoto: 'Seleccionar desde galería',
+  });
+
+  if (!image) return;
+
+  this.imageSrc = image.webPath ?? image.path ?? '';
+}
 }
